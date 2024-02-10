@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Signup</title>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-text">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">
+				<img src="{{ url_for('static', filename='resources/magic_resume_dark.png') }}" alt="" width="30" height="30" class="d-inline-block align-text-top">
+				ResumeReviser
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link" aria-current="page" href="/login">Login</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/signup">Sign Up</a>
+				</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+<div class="container">
+	<form method="post" action="" class="form-signup">
+	<h3 id="form-title1">Make your resume complete.</h3>
+	<div class="form-group">
+		<label for="firstName">First Name</label>
+		<input type="text" class="form-control" name="first_name" placeHolder="Evelyn" required autofocus>
+	</div>
+	<div class="form-group">
+		<label for="lastName">Last Name</label>
+		<input type="text" class="form-control" name="last_name" placeHolder="Patrowski" required>
+	</div>
+	<div class="form-group">
+		<label for="inputEmail">Email</label>
+		<input type="email" class="form-control" name="email" placeHolder="name@example.com" required>
+	</div>
+	<div class="form-group">
+		<label for="inputPassword" id="form-text-left">Password</label>
+		<input type="password" class="form-control" name="passw" placeholder="password" required>
+	</div>
+	<button class="btn btn-lg btn-primary btn-block btn-light" type="submit">Sign up</button>
+	<div style="margin-top: 20px;" id="form-text">
+		Already have an account? <a style="color: rgb(255, 255, 255)" href="login">Click to Login</a>
+	</div>
+</form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
