@@ -11,4 +11,4 @@ htmlcov/
 
 dist/
 build/
-*.egg-info/
+*.egg-info

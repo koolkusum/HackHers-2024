@@ -1,11 +1,16 @@
-from imp import init_builtin
-from msilib import init_database
+# Standard Library Imports
 import pathlib
+import sqlite3
 import textwrap
 from os import urandom
+
+# Third-Party Imports
 from flask import Flask, render_template, redirect, request, session, url_for, send_file, make_response, g
-import sqlite3
-import google.generativeai as genai
+
+# External Library Imports
+from google.generativeai import genai
+from imp import init_builtin
+from msilib import init_database
 
 
 app = Flask(__name__)
