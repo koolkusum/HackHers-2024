@@ -1,7 +1,9 @@
 from imp import init_builtin
 from msilib import init_database
+import pathlib
+import textwrap
 from os import urandom
-from flask import Flask, render_template, redirect, request, session, url_for
+from flask import Flask, render_template, redirect, request, session, url_for, send_file, make_response, g
 import sqlite3
 import google.generativeai as genai
 
@@ -13,6 +15,12 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 DATABASE = 'task.db'
 app.config['DATABASE'] = DATABASE
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
 
 @app.route("/", methods=["GET", "POST"])
 def signup():
@@ -82,14 +90,13 @@ def login():
         if user["passw"] == passw:  # Assuming both are plain text
             # Store user information in the session
             session["user_id"] = user["id"]
-            return redirect(url_for("mainpage"))
+            return redirect(url_for("login"))
         else:
             return render_template("error.html")
 
     return render_template("login.html")
 
 
-init_database()
 if __name__ == "__main__":
     app.run(debug=True)
 
