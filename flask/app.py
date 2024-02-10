@@ -8,7 +8,7 @@ from os import urandom
 from flask import Flask, render_template, redirect, request, session, url_for, send_file, make_response, g
 
 # External Library Imports
-from google.generativeai import genai
+import google.generativeai as genai
 from imp import init_builtin
 from msilib import init_database
 
