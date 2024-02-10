@@ -11,7 +11,7 @@ CREATE TABLE users (
 
 CREATE TABLE tasks (
     TID INTEGER PRIMARY KEY AUTOINCREMENT,
-    uid INTEGER NOT NULL,
+    userid INTEGER NOT NULL,
     task TEXT NOT NULL,
-    date Timestamp NOT NULL
+    dateOfTask DATE NOT NULL
 );
