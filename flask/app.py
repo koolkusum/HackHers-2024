@@ -44,7 +44,7 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         # Ensure required fields are filled
@@ -86,7 +86,7 @@ def signup():
         user = cursor.fetchone()
         session["user_id"] = user["id"]
 
-        return redirect(url_for("mainpage"))
+        return redirect(url_for("login"))
 
     return render_template("signup.html")
 
@@ -112,16 +112,19 @@ def login():
         if user["passw"] == passw:  # Assuming both are plain text
             # Store user information in the session
             session["user_id"] = user["id"]
-            return redirect(url_for("login"))
+            return redirect(url_for("signup"))
         else:
             return render_template("error.html")
 
     return render_template("login.html")
 
 
-# @app.route("/mainpage", methods=["GET", "POST"])
-# def mainpage():
-
+@app.route("/mainpage", methods=["GET", "POST"])
+def mainpage():
+    if request.method == "POST":
+        # add later
+    else:
+        return render_template("mainpage.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
