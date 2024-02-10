@@ -12,9 +12,6 @@ from imp import init_builtin
 
 # DATABASE = 'task.db'
 
-# @app.route("/")
-# def index():
-#     return render_template("signup.html")
 
 from os import urandom
 from flask import Flask, render_template, request, jsonify, redirect, session, url_for
