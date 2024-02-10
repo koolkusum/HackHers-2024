@@ -1,112 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Tasks</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 600px;
-        margin: 50px auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-    }
-    .delete-btn {
-        background-color: #dc3545;
-    }
-</style>
-</head>
-<body>
-<div class="container">
-    <h2>User Tasks</h2>
-    <div id="taskInput">
-        <label for="task">Enter a task:</label>
-        <input type="text" id="task" placeholder="Enter your task">
-        <button onclick="addTask()">Add Task</button>
-    </div>
-    <div id="taskList">
-        <h3>Tasks:</h3>
-        <ul id="list"></ul>
-    </div>
-    <div id="submitBtn" style="display: none;">
-        <button onclick="submitTasks()">Submit Tasks</button>
-    </div>
-</div>
-
-<script>
-    var tasksAdded = 0;
-
-    function addTask() {
-        var taskInput = document.getElementById("task");
-        var task = taskInput.value.trim();
-        if (task !== "") {
-            var list = document.getElementById("list");
-            var listItem = document.createElement("li");
-            listItem.textContent = task;
-            
-            // Adding delete button for each task
-            var deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete Task";
-            deleteBtn.classList.add("delete-btn");
-            deleteBtn.onclick = function() {
-                listItem.remove();
-                tasksAdded--;
-                if (tasksAdded < 5) {
-                    document.getElementById("submitBtn").style.display = "none";
-                }
-            };
-            listItem.appendChild(deleteBtn);
-            
-            list.appendChild(listItem);
-            taskInput.value = "";
-            tasksAdded++;
-            if (tasksAdded >= 5) {
-                document.getElementById("submitBtn").style.display = "block";
-            }
-        } else {
-            alert("Please enter a valid task!");
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-    }
 
-    function submitTasks() {
-        var tasks = [];
-        document.querySelectorAll("#list li").forEach(function(task) {
-            tasks.push(task.textContent);
-        });
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-        // Send tasks to Flask backend
-        fetch('/submit-tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({tasks: tasks}),
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            // Optionally, you can reset the task list or perform any other action here
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
-</script>
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>User Tasks</h2>
+        <div id="taskInput">
+            <label for="task">Enter a task:</label>
+            <input type="text" id="task" placeholder="Enter your task">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <div id="taskList">
+            <h3>Tasks:</h3>
+            <ul id="list"></ul>
+        </div>
+        <div id="submitBtn" style="display: none;">
+            <button onclick="submitTasks()">Submit Tasks</button>
+        </div>
+    </div>
+
+    <script>
+        var tasksAdded = 0;
+
+        function addTask() {
+            var taskInput = document.getElementById("task");
+            var task = taskInput.value.trim();
+            if (task !== "") {
+                var list = document.getElementById("list");
+                var listItem = document.createElement("li");
+                listItem.textContent = task;
+
+                // Set name attribute dynamically
+                listItem.setAttribute("name", "list" + (tasksAdded + 1));
+
+                // Adding delete button for each task
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete Task";
+                deleteBtn.classList.add("delete-btn");
+                deleteBtn.onclick = function () {
+                    listItem.remove();
+                    tasksAdded--;
+                    if (tasksAdded < 5) {
+                        document.getElementById("submitBtn").style.display = "none";
+                    }
+                };
+                listItem.appendChild(deleteBtn);
+
+                list.appendChild(listItem);
+                taskInput.value = "";
+                tasksAdded++;
+                if (tasksAdded >= 5) {
+                    document.getElementById("submitBtn").style.display = "block";
+                }
+            } else {
+                alert("Please enter a valid task!");
+            }
+        }
+
+
+        function submitTasks() {
+            var tasks = [];
+            document.querySelectorAll("#list li").forEach(function (task) {
+                tasks.push(task.textContent);
+            });
+
+            // Send tasks to Flask backend
+            fetch('/submit-tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tasks: tasks }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    // Optionally, you can reset the task list or perform any other action here
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 </body>
+
 </html>
