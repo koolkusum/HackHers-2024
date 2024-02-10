@@ -85,9 +85,27 @@
     }
 
     function submitTasks() {
-        // Here you can add functionality to submit the tasks
-        alert("Tasks submitted successfully!");
-        // For example, you could send the tasks to a server, or perform any other desired action
+        var tasks = [];
+        document.querySelectorAll("#list li").forEach(function(task) {
+            tasks.push(task.textContent);
+        });
+
+        // Send tasks to Flask backend
+        fetch('/submit-tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({tasks: tasks}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            // Optionally, you can reset the task list or perform any other action here
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
 </script>
 </body>
