@@ -11,6 +11,9 @@ from flask import Flask, render_template, redirect, request, session, url_for, s
 import google.generativeai as genai
 from imp import init_builtin
 from msilib import init_database
+from google.auth import load_credentials_from_file
+from google.auth.transport.requests import Request
+from google.generativeai import generative_models
 
 
 app = Flask(__name__)
@@ -20,6 +23,14 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 DATABASE = 'task.db'
 app.config['DATABASE'] = DATABASE
+
+# Load Google credentials from the environment
+creds, project = load_credentials_from_file('.env')
+auth_req = Request()
+creds.refresh(auth_req)
+
+# Initialize the GenAI client
+genai_client = generative_models.GenerativeModelsServiceClient(credentials=creds)
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -100,6 +111,10 @@ def login():
             return render_template("error.html")
 
     return render_template("login.html")
+
+
+# @app.route("/mainpage", methods=["GET", "POST"])
+# def mainpage():
 
 
 if __name__ == "__main__":

@@ -1,2 +1,4 @@
-Flask==2.1.1
-google-generativeai==0.1.0
+Flask==2.0.2
+google-auth==2.6.0
+google-generativeai==0.2.0
+python-dotenv==0.19.2
