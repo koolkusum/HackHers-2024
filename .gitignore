@@ -1,4 +1,5 @@
 .venv/
+task.db
 
 *.pyc
 __pycache__/
