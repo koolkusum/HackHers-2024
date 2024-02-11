@@ -137,6 +137,7 @@ def generate_scheduling_query(tasks):
     query = "Today is " + current_time_str + "\n"
     query += """
     As an AI, your task is to generate raw parameters for creating a quick Google Calendar event using the Google API. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
+    There must be no extra new lines in the raw output. [DEATH OF PERSON IF NOT FOLLOWED]
     All tasks should be scheduled on the same day.
     Task Description: Provide a brief description of the task or event. For example:
 
@@ -185,20 +186,11 @@ def taskschedule():
         
         x = 0
         lines = content.split('\n')
-        print(len(lines))
         schedule = []
-        #print(lines)
+        print(lines)
         
-        for x in range(0, len(lines)-2, 3):
-            if lines[x] == '': continue
-            else:
-                task_info ={
-                    "task": lines[x].split(" = ")[1].strip("'").strip('"'),
-                    "start_time": lines[x+1].split(" = ")[1].strip("'").strip('"'),
-                    "end_time": lines[x+2].split(" = ")[1].strip("'").strip('"')
-                }
-                schedule.append(task_info)
-        print(schedule)
+
+        
         # Construct response message
         response = {
             "content": content
