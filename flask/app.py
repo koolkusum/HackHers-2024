@@ -123,6 +123,17 @@ def login():
 
     return render_template("login.html")
 
+def generate_scheduling_query(tasks):
+    # Initialize an empty query
+    query = ""
+
+    # Loop through each task
+    for task in tasks:
+        # Generate a query for each task and append it to the overall query
+        query += f"SCHEDULE TASK '{task}'\n"
+
+    # Return the generated query
+    return query
 
 @app.route("/taskschedule", methods=["GET", "POST"])
 def taskschedule():
@@ -136,7 +147,8 @@ def taskschedule():
         for i in tasks:
             i = i.strip('Delete Task')
             stripTasks.append(i)
-        response = {"message": "Tasks received successfully"}
+        query = genai_client.generate_scheduling_query(stripTasks)
+        response = {"message": "Tasks scheduled successfully", "query": query}
         return jsonify(response)
     else:
         return render_template("taskschedule.html")
