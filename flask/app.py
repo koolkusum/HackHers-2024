@@ -337,6 +337,31 @@ def productivity():
 def burnout():
     return render_template("burnout.html")
 
+@app.route('/submitproductivity', methods=["POST"])
+def submitproductivity():
+    try:
+        # Extract data from the JSON payload
+        data = request.json
+        start_hour = data.get('startHour')
+        end_hour = data.get('endHour')
+        review = data.get('review')
+
+        # Create a list with the extracted values
+        extracted_values = [start_hour, end_hour, review]
+
+        # Print the list
+        print("Extracted Values:", extracted_values)
+
+        # Process the data as needed (e.g., store it in a database)
+
+        # Return a success response
+        return jsonify({"success": True, "message": "Productivity data submitted successfully"})
+    except Exception as e:
+        # Return an error response if there's an exception
+        return jsonify({"success": False, "message": str(e)})
+
+
+
 init_db()
 if __name__ == "__main__":
     app.run(debug=True)

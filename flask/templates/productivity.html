@@ -1,18 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productivity</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <title>Productivity Review</title>
+    <!-- Bootstrap CSS CDN link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
 <body>
-    <!-- <p>Welcome to BalanSync!</p> -->
-    {% include 'navbar.html' %}
+  {% include 'navbar.html' %}
+
+<div class="container mt-5">
+    <h2>Productivity Review Form</h2>
+    
+    <form action="/submitproductivity" method="post">
+        <div class="form-group">
+            <label for="startHour">Start Hour:</label>
+            <select class="form-control" id="startHour" name="startHour">
+                <option value="7">7:00 AM</option>
+                <option value="8">8:00 AM</option>
+                <option value="9">9:00 AM</option>
+                <option value="10">10:00 AM</option>
+                <option value="11">11:00 AM</option>
+                <option value="12">12:00 PM</option>
+                <option value="13">1:00 PM</option>
+                <option value="14">2:00 PM</option>
+                <option value="15">3:00 PM</option>
+                <option value="16">4:00 PM</option>
+                <option value="17">5:00 PM</option>
+                <option value="18">6:00 PM</option>
+                <option value="19">7:00 PM</option>
+                <option value="20">8:00 PM</option>
+                <option value="21">9:00 PM</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="endHour">End Hour:</label>
+            <select class="form-control" id="endHour" name="endHour">
+              <option value="7">7:00 AM</option>
+              <option value="8">8:00 AM</option>
+              <option value="9">9:00 AM</option>
+              <option value="10">10:00 AM</option>
+              <option value="11">11:00 AM</option>
+              <option value="12">12:00 PM</option>
+              <option value="13">1:00 PM</option>
+              <option value="14">2:00 PM</option>
+              <option value="15">3:00 PM</option>
+              <option value="16">4:00 PM</option>
+              <option value="17">5:00 PM</option>
+              <option value="18">6:00 PM</option>
+              <option value="19">7:00 PM</option>
+              <option value="20">8:00 PM</option>
+              <option value="21">9:00 PM</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="review">Productivity Review (1-5):</label>
+            <select class="form-control" id="review" name="review">
+                <!-- Add options for review rating -->
+                <option value="1">1 (Not Productive)</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5 (Very Productive)</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" onclick="submitProductivityReview()">Submit Review</button>
+    </form>
+</div>
+
+<script>
+  function submitProductivityReview() {
+      // Get form data
+      const formData = {
+          startHour: document.getElementById('startHour').value,
+          endHour: document.getElementById('endHour').value,
+          review: document.getElementById('review').value
+      };
   
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+      // Make a fetch request
+      fetch('/submitproductivity', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+          // Handle the response data as needed
+          console.log(data);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+  }
+  </script>
 </body>
 </html>
