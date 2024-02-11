@@ -134,8 +134,9 @@ def taskschedule():
         # Optionally, you can store the tasks in a database or perform 
         stripTasks = []
         for i in tasks:
-            i = i.strip('Delete Task')
+            i = i.replace('Delete Task', '')
             stripTasks.append(i)
+        print("Modified tasks:", stripTasks)
         response = {"message": "Tasks received successfully"}
         return jsonify(response)
     else:
