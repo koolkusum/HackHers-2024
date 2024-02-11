@@ -125,7 +125,7 @@ def login():
 
 
 def generate_scheduling_query(tasks):
-    query = "In the format of datetime(SQL QUERY FORMAT) start, datetime end and return a list of the best way the schedule these tasks today:"
+    query = "In the format of datetime(SQL QUERY FORMAT) start, datetime end and return a list of the best way the schedule these tasks today. Assume the person is working a 9 to 5 so everything either be before 9 or after 5. Each task will either be around an hour.\n:"
     taskss =""
     for task in tasks:
         taskss+=f"SCHEDULE TASK:'{task}'\n"
