@@ -165,6 +165,10 @@ def home():
 def index():
     return redirect(url_for('home'))
 
+@app.route('/preferences') 
+def preferences():
+    return render_template("preferences.html")
+
 init_db()
 if __name__ == "__main__":
     app.run(debug=True)

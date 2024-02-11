@@ -1,21 +1,31 @@
-.navbar-custom {
-    background-color: #3498db; /* Replace with your desired background color */
+.bg-primary {
+    background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
 }
-  
-.navbar-custom 
-.navbar-brand,
-.navbar-custom 
-.navbar-nav 
+
 .nav-link {
-    color: #ffffff; /* Replace with your desired text color */
+    color: #ffffff; /* Text color for the brand and links */
 }
 
-.navbar-custom 
+.nav-link {
+    transition: color 0.3s; /* Smooth transition effect for color changes */
+}
+
+.nav-link:hover {
+    color: #ffd700; /* Text color on hover */
+}
+
 .navbar-toggler-icon {
-    background-color: #ffffff; /* Replace with your desired color for the toggler icon */
+    background-color: #ffffff; /* Color for the toggler icon */
 }
 
-.navbar-custom 
+
 .navbar-toggler {
-border-color: #ffffff; /* Replace with your desired border color for the toggler button */
+    border-color: #ffffff; /* Border color for the toggler button */
+}
+.navbar-toggler:hover {
+    color: #ffd700; /* Text color on hover */
+}
+
+.navbar-toggler:hover {
+    color: #ffd700; /* Text color on hover */
 }
