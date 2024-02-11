@@ -9,20 +9,24 @@
     <style>
         /* Add custom styles if needed */
         /* Adjustments to match Bootstrap styling */
-        #taskInput {
-            margin-bottom: 20px;
-        }
-
+        #taskInput,
         #taskList {
             margin-bottom: 20px;
         }
 
-        .delete-btn {
-            margin-left: 10px;
-        }
-
         .list-group-item {
             cursor: move;
+            display: flex;
+            align-items: center;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+            font-size: 1rem;
+        }
+
+        .delete-btn:hover {
+            color: #a71d2a;
         }
     </style>
 </head>
@@ -37,8 +41,7 @@
         </div>
         <div id="taskList">
             <h3>Tasks:</h3>
-            <ul id="list" class="list-group" ondrop="drop(event)" ondragover="allowDrop(event)">
-            </ul>
+            <ul id="list" class="list-group" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
         </div>
         <div id="submitBtn" style="display: none;">
             <button class="btn btn-success" onclick="submitTasks()">Submit Tasks</button>
@@ -51,54 +54,58 @@
     <script>
         var tasksAdded = 0;
 
+        document.getElementById("task").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+
         function addTask() {
             var taskInput = document.getElementById("task");
             var task = taskInput.value.trim();
             if (task !== "") {
                 var list = document.getElementById("list");
-                var listItem = document.createElement("li");
-                listItem.textContent = task;
-                listItem.className = "list-group-item";
-                listItem.setAttribute("draggable", "true");
-                listItem.setAttribute("ondragstart", "drag(event)");
-                listItem.id = "task" + (tasksAdded + 1);
-
-                // Set name attribute dynamically
-                listItem.setAttribute("name", "list" + (tasksAdded + 1));
-
-                // Adding delete button for each task
-                var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete Task";
-                deleteBtn.className = "btn btn-danger delete-btn";
-                deleteBtn.onclick = function () {
-                    listItem.remove();
-                    tasksAdded--;
-                    if (tasksAdded < 5) {
-                        document.getElementById("submitBtn").style.display = "none";
-                    }
-                };
-                listItem.appendChild(deleteBtn);
-
+                var listItem = createListItem(task);
                 list.appendChild(listItem);
                 taskInput.value = "";
                 tasksAdded++;
-                if (tasksAdded >= 5) {
-                    document.getElementById("submitBtn").style.display = "block";
-                }
-
-                updateTaskIds(); // Update task IDs after adding a new task
+                toggleSubmitBtn();
             } else {
                 alert("Please enter a valid task!");
             }
         }
 
-        function submitTasks() {
-            var tasks = [];
-            document.querySelectorAll("#list li").forEach(function (task) {
-                tasks.push(task.textContent);
-            });
+        function createListItem(task) {
+            var listItem = document.createElement("li");
+            listItem.textContent = task;
+            listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+            listItem.setAttribute("draggable", "true");
+            listItem.setAttribute("ondragstart", "drag(event)");
+            listItem.id = "task" + (tasksAdded + 1);
+            listItem.setAttribute("name", "list" + (tasksAdded + 1));
+            var deleteBtn = createDeleteButton(listItem);
+            listItem.appendChild(deleteBtn);
+            return listItem;
+        }
 
-            // Send tasks to Flask backend
+        function createDeleteButton(listItem) {
+            var deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "×"; // Using a close symbol
+            deleteBtn.className = "delete-btn btn";
+            deleteBtn.onclick = function () {
+                listItem.remove();
+                tasksAdded--;
+                toggleSubmitBtn();
+            };
+            return deleteBtn;
+        }
+
+        function toggleSubmitBtn() {
+            document.getElementById("submitBtn").style.display = tasksAdded >= 1 ? "block" : "none";
+        }
+
+        function submitTasks() {
+            var tasks = Array.from(document.querySelectorAll("#list li")).map(task => task.textContent);
             fetch('/taskschedule', {
                 method: 'POST',
                 headers: {
@@ -109,7 +116,6 @@
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message);
-                    // Optionally, you can reset the task list or perform any other action here
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -125,28 +131,23 @@
         }
 
         function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var draggedItem = document.getElementById(data);
-    var target = ev.target.closest('ul');
-    if (target && target.id === 'list') {
-        var targetItem = ev.target.closest('li');
-        if (targetItem) {
-            var targetIndex = Array.from(target.children).indexOf(targetItem);
-            var list = document.getElementById('list');
-            var draggedIndex = Array.from(list.children).indexOf(draggedItem);
-            if (draggedIndex !== -1 && draggedIndex !== targetIndex) {
-                if (draggedIndex < targetIndex) {
-                    list.insertBefore(draggedItem, targetItem.nextSibling);
-                } else {
-                    list.insertBefore(draggedItem, targetItem);
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedItem = document.getElementById(data);
+            var target = ev.target.closest('ul');
+            if (target && target.id === 'list') {
+                var targetItem = ev.target.closest('li');
+                if (targetItem) {
+                    var targetIndex = Array.from(target.children).indexOf(targetItem);
+                    var list = document.getElementById('list');
+                    var draggedIndex = Array.from(list.children).indexOf(draggedItem);
+                    if (draggedIndex !== -1 && draggedIndex !== targetIndex) {
+                        list.insertBefore(draggedItem, draggedIndex < targetIndex ? targetItem.nextSibling : targetItem);
+                        updateTaskIds();
+                    }
                 }
-                updateTaskIds();
             }
         }
-    }
-}
-
 
         function updateTaskIds() {
             var listItems = document.querySelectorAll("#list li");
