@@ -43,91 +43,86 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-primary border-bottom" data-bs-theme="dark">
-    <div class="container-fluid">
-        <a class="navbar-brand-container" href="/">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="BalancSync Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
-                </li>
-                
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/productivity" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Preferences
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/productivity">Productivity</a></li>
-                        <li><a class="dropdown-item" href="/burnout">Burnout</a></li>
-                    </ul>
-                </li>
-                <div class="fixed-width-div">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/taskschedule" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Scheduling
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/taskschedule">Tasks</a></li>
-                        <li><a class="dropdown-item" href="/prompts">Prompts</a></li>
-                    </ul>
-                </li>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link" href="/prodev">Career</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="position-relative">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
-                    <div class="dropdown-menu search-dropdown" id="searchDropdown">
-                        <!-- Populate with search results using JavaScript -->
+    <nav class="navbar navbar-expand-lg bg-primary border-bottom" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand-container" href="/">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="BalancSync Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/productivity" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Preferences
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/productivity">Productivity</a></li>
+                            <li><a class="dropdown-item" href="/burnout">Burnout</a></li>
+                        </ul>
+                    </li>
+                    <div class="fixed-width-div">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/taskschedule" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Scheduling
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/taskschedule">Tasks</a></li>
+                            <li><a class="dropdown-item" href="/prompts">Prompts</a></li>
+                        </ul>
+                    </li>
                     </div>
-                </div>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/prodev">Career</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" id="searchForm">
+                    <div class="position-relative">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+                        <ul class="dropdown-menu search-dropdown" id="searchDropdown" style="display: none;"></ul>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</nav>
-
-<script>
-    // JavaScript to handle search bar functionality
-    $(document).ready(function() {
-        $('#searchInput').on('input', function() {
-            var inputText = $(this).val().toLowerCase();
-            var dropdownMenu = $('#searchDropdown');
-            dropdownMenu.empty();
-            if (inputText.trim().length === 0) {
-                dropdownMenu.removeClass('show');
-                return;
-            }
-
-            // Filter menu items
-            var menuItems = $('.navbar-nav .nav-link').filter(function() {
-                return $(this).text().toLowerCase().includes(inputText);
+    </nav>
+    <script>
+        document.getElementById("searchInput").addEventListener("input", function() {
+            var searchTerm = this.value.trim().toLowerCase();
+            var matches = [];
+    
+            // Check if search term matches any navigation links
+            var navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+            navLinks.forEach(function(link) {
+                var linkText = link.textContent.trim().toLowerCase();
+                if (linkText.includes(searchTerm) && searchTerm !== "") {
+                    matches.push(`<li><a class="dropdown-item" href="${link.getAttribute("href")}">${linkText}</a></li>`);
+                }
             });
-
-            // Add filtered items to dropdown menu
-            menuItems.each(function() {
-                var link = $(this).clone();
-                dropdownMenu.append($('<div class="dropdown-item"></div>').append(link));
+    
+            // Check if search term matches any dropdown items
+            var dropdownItems = document.querySelectorAll(".navbar-nav .dropdown-item");
+            dropdownItems.forEach(function(item) {
+                var itemText = item.textContent.trim().toLowerCase();
+                if (itemText.includes(searchTerm) && searchTerm !== "") {
+                    matches.push(`<li><a class="dropdown-item" href="${item.getAttribute("href")}">${itemText}</a></li>`);
+                }
             });
-
-            // Show dropdown menu
-            dropdownMenu.addClass('show');
-        });
-
-        // Close dropdown menu when clicking outside
-        $(document).on('click', function(event) {
-            if (!$(event.target).closest('.position-relative').length) {
-                $('#searchDropdown').removeClass('show');
+    
+            var searchDropdown = document.getElementById("searchDropdown");
+            if (matches.length > 0) {
+                searchDropdown.innerHTML = matches.join("");
+                searchDropdown.style.display = "block";
+            } else {
+                searchDropdown.innerHTML = "";
+                searchDropdown.style.display = "none";
             }
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
