@@ -1,0 +1,21 @@
+.navbar-custom {
+    background-color: #3498db; /* Replace with your desired background color */
+}
+  
+.navbar-custom 
+.navbar-brand,
+.navbar-custom 
+.navbar-nav 
+.nav-link {
+    color: #ffffff; /* Replace with your desired text color */
+}
+
+.navbar-custom 
+.navbar-toggler-icon {
+    background-color: #ffffff; /* Replace with your desired color for the toggler icon */
+}
+
+.navbar-custom 
+.navbar-toggler {
+border-color: #ffffff; /* Replace with your desired border color for the toggler button */
+}
