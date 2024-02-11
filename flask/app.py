@@ -340,7 +340,7 @@ def prodev():
         if event_name:
             # Process the event name as needed (e.g., save to database)
             print("Attending event:", event_name)
-            calendarprogram.addSchedule()
+            calendarprogram.addSchedule(event_name)
             return {"message": f"Attending event: {event_name}"}, 200
         else:
             return {"error": "Event name not provided in request body"},
