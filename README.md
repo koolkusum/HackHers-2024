@@ -12,7 +12,7 @@
 
 </div>
 
-**An automated tool that helps revise and review resumes while offering tips based on job descriptions!**
+**Tool handles organization of events and also does recommendation through general AI applications.**
 
 <p align="center">
 <i>Built for HackHers Spring 2024</i>
