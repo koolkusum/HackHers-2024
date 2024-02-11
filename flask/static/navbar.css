@@ -7,11 +7,12 @@
 }
 
 .nav-link {
-    transition: color 0.3s; /* Smooth transition effect for color changes */
+    transition: color 0.3s, font-size 0.3s; /* Add transition for a smooth effect */
 }
 
 .nav-link:hover {
     color: #ffd700; /* Text color on hover */
+    font-size: 1.1em;
 }
 
 .navbar-toggler-icon {
@@ -24,8 +25,19 @@
 }
 .navbar-toggler:hover {
     color: #ffd700; /* Text color on hover */
+    font-size: 1.1em;
 }
 
 .navbar-toggler:hover {
     color: #ffd700; /* Text color on hover */
+    font-size: 1.1em;
 }
+
+.nav-link.active { 
+    transition: color 0.3s, font-size 0.3s; /* Add transition for a smooth effect */
+
+}
+.nav-link.active:hover {
+    color: #ffd700;
+    font-size: 1.1em;
+  }
