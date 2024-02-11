@@ -4,7 +4,9 @@ import sqlite3
 from datetime import datetime
 from os import urandom
 from dotenv import load_dotenv
-
+import datetime as dt
+import os.path
+import time
 # Third-Party Imports
 from flask import Flask, jsonify, render_template, redirect, request, session, url_for, g
 
@@ -13,7 +15,11 @@ import google.generativeai as genai
 from google.auth import load_credentials_from_file
 from google.oauth2 import credentials
 from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
 from google.generativeai import generative_models
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 
 app = Flask(__name__)
@@ -25,6 +31,7 @@ DATABASE = 'task.db'
 app.config['DATABASE'] = DATABASE
 
 genai_client = None
+SCOPES = 'https://www.googleapis.com/auth/calendar'
 
 try:
     api_key = os.getenv("GENAI_API_KEY")
@@ -179,33 +186,129 @@ def taskschedule():
         for i in tasks:
             i = i.replace('Delete Task', '')
             stripTasks.append(i)
-        print("Modified tasks:", stripTasks)
+        # print("Modified tasks:", stripTasks)
         query_result = generate_scheduling_query(stripTasks)
         content = query_result.text
         content = '\n'.join([line for line in content.split('\n') if line.strip()])
-        print(content)
+        # print(content)
         
         x = 0
         lines = content.split('\n')
         schedule = []
-        print(len(lines))
-        schedule = []
-        print(lines)
+        # print(len(lines))
+        # print(lines)
 
         for x in range(0, len(lines)-2, 3):
             if lines[x] == '': continue
             else:
                 task_info ={
                     "task": lines[x].split(" = ")[1].strip("'"),
-                    "start_time": lines[x+1].split(" = ")[1].strip("'"),
-                    "end_time": lines[x+2].split(" = ")[1].strip("'")
+                    "start_time": lines[x+1].split(" = ")[1].strip("'").strip("\""),
+                    "end_time": lines[x+2].split(" = ")[1].strip("'").strip("\"")
                 }
                 schedule.append(task_info)
-        print(schedule)
+        # print(schedule)
+
         
-        
+        #['task = "Wash Car"', 'start_time = "2024-02-11T12:00"', 'end_time = "2024-02-11T13:00"', 'task = "Office Hours"', 'start_time = "2024-02-11T14:00"', 'end_time = "2024-02-11T15:00"', 'task = "Study Math"', 'start_time = "2024-02-11T10:00"', 'end_time = "2024-02-11T11:00"', 'task = "Leetcode Problems"', 'start_time = "2024-02-11T16:00"', 'end_time = "2024-02-11T17:00"', 'task = "Practice Swimming"', 'start_time = "2024-02-11T07:00"', 'end_time = "2024-02-11T08:00"']
+        #[{'task': '"Wash Car"', 'start_time': '"2024-02-11T12:00"', 'end_time': '"2024-02-11T13:00"'}, {'task': '"Office Hours"', 'start_time': '"2024-02-11T14:00"', 'end_time': '"2024-02-11T15:00"'}, {'task': '"Study Math"', 'start_time': '"2024-02-11T10:00"', 'end_time': '"2024-02-11T11:00"'}, {'task': '"Leetcode Problems"', 'start_time': '"2024-02-11T16:00"', 'end_time': '"2024-02-11T17:00"'}, {'task': '"Practice Swimming"', 'start_time': '"2024-02-11T07:00"', 'end_time': '"2024-02-11T08:00"'}]
         
         # Construct response message
+
+        local_time = dt.datetime.now()
+        local_timezone = dt.datetime.now(dt.timezone.utc).astimezone().tzinfo
+        current_time = dt.datetime.now(local_timezone)
+        timezone_offset = current_time.strftime('%z')
+        offset_string = list(timezone_offset)
+        offset_string.insert(3, ':')
+        timeZone = "".join(offset_string)
+        creds = None
+        if os.path.exists("token.json"):
+            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+                creds = flow.run_local_server(port = 0)
+
+                with open("token.json", "w") as token:
+                    token.write(creds.to_json())
+
+        try:
+            service = build("calendar", "v3", credentials = creds)
+            now = dt.datetime.now().isoformat() + "Z"
+            event_result = service.events().list(calendarId = "primary", timeMin=now, maxResults = 10, singleEvents = True, orderBy = "startTime").execute()
+
+            events = event_result.get("items", [])
+
+            if not events:
+                print("No upcoming events found!")
+            else:
+                for event in events:
+                    start = event["start"].get("dateTime", event["start"].get("date"))
+                    print(start, event["summary"])
+
+            # event = {
+            #     "summary": "My Python Event",
+            #     "location": "Somewhere Online",
+            #     "description": "",
+            #     "colorId": 6,
+            #     "start": {
+            #         "dateTime": "2024-02-11T09:00:00" + timeZone,
+            #     },
+
+            #     "end": {
+            #         "dateTime": "2024-02-11T17:00:00" + timeZone,
+            #     },
+            # }
+            # time.wait(5)
+
+            # event = service.events().insert(calendarId = "primary", body = event).execute()
+            # print(f"Event Created {event.get('htmlLink')}")
+            print(schedule)
+            for task in schedule:
+                print(task)
+            #     time.wait(5)
+                taskSummary = "test"
+                taskStart = "2024-02-11T14:00"
+                taskEnd = "2024-02-11T16:00"
+                
+            #     # Add time zone offset to date-time strings (assuming they're in ET)
+            #     taskStart += "+02:00"
+            #     taskEnd += "+02:00"
+                
+                event = {
+                    "summary": taskSummary,
+                    "location": "",
+                    "description": "",
+                    "colorId": 6,
+                    "start": {
+                        "dateTime": taskStart + timeZone,
+                        # "timeZone": "Eastern Time"
+                    },
+
+                    "end": {
+                        "dateTime": taskEnd + timeZone,
+                        # "timeZone": "Eastern Time"
+                    },
+                    # "recurrence": [
+                    #     "RRULE: FREQ=DAILY;COUNT=3"
+                    # ],
+                    # "attendees": [
+                    #     {"email": "social@neuralnine.com"},
+                    #     {"email": "pedropa828@gmail.com"},
+                    # ]
+                }
+
+
+                event = service.events().insert(calendarId = "primary", body = event).execute()
+                print(f"Event Created {event.get('htmlLink')}")
+            
+
+        except HttpError as error:
+            print("An error occurred:", error)
         response = {
             "content": content
         }
