@@ -174,14 +174,6 @@ def generate_scheduling_query(tasks):
     result = model.generate_content(query + taskss)
     return result
 
-
-# @app.route("/finances", methods=["GET", "POST"])
-# def finances():
-#     if request.method == "POST":
-        
-#     else:
-#         render_template = render_template("finance.html")
-
 @app.route("/taskschedule", methods=["GET", "POST"])
 def taskschedule():
     if request.method == "POST":
@@ -236,7 +228,11 @@ def taskschedule():
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except Exception as e:
+                    if os.path.exists("token.json"):
+                        os.remove("token.json")
             else:
                 flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
                 creds = flow.run_local_server(port = 0)
