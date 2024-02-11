@@ -33,6 +33,13 @@
             height: auto; /* Maintain aspect ratio */
             transition: box-shadow 0.3s ease; /* Add transition for smooth effect */
         }
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -69,18 +76,58 @@
                         <li><a class="dropdown-item" href="/prompts">Prompts</a></li>
                     </ul>
                 </li>
-                
                 </div>
                 <li class="nav-item">
                     <a class="nav-link" href="/prodev">Career</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <div class="position-relative">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+                    <div class="dropdown-menu search-dropdown" id="searchDropdown">
+                        <!-- Populate with search results using JavaScript -->
+                    </div>
+                </div>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </div>
 </nav>
+
+<script>
+    // JavaScript to handle search bar functionality
+    $(document).ready(function() {
+        $('#searchInput').on('input', function() {
+            var inputText = $(this).val().toLowerCase();
+            var dropdownMenu = $('#searchDropdown');
+            dropdownMenu.empty();
+            if (inputText.trim().length === 0) {
+                dropdownMenu.removeClass('show');
+                return;
+            }
+
+            // Filter menu items
+            var menuItems = $('.navbar-nav .nav-link').filter(function() {
+                return $(this).text().toLowerCase().includes(inputText);
+            });
+
+            // Add filtered items to dropdown menu
+            menuItems.each(function() {
+                var link = $(this).clone();
+                dropdownMenu.append($('<div class="dropdown-item"></div>').append(link));
+            });
+
+            // Show dropdown menu
+            dropdownMenu.addClass('show');
+        });
+
+        // Close dropdown menu when clicking outside
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.position-relative').length) {
+                $('#searchDropdown').removeClass('show');
+            }
+        });
+    });
+</script>
 </body>
 </html>
