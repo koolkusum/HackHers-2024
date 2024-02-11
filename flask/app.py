@@ -177,6 +177,14 @@ def index():
 def preferences():
     return render_template("preferences.html")
 
+@app.route('/burnout') 
+def preferences():
+    return render_template("burnout.html")
+
+@app.route('/productivity') 
+def preferences():
+    return render_template("productivity.html")
+
 init_db()
 if __name__ == "__main__":
     app.run(debug=True)
