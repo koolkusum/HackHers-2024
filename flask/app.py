@@ -89,7 +89,7 @@ def signup():
         cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
         user_id = cursor.fetchone()[0]
 
-# Store user ID in the session
+        # Store user ID in the session
         session["user_id"] = user_id
 
         return redirect(url_for("home"))
@@ -143,13 +143,13 @@ def generate_scheduling_query(tasks):
     Task Description: "Meeting with client"
     Scheduling Parameters: Consider the user's work-life balance and aim to schedule the event at an appropriate time. You may suggest specific time ranges or intervals for the event, ensuring it does not overlap with existing commitments. For instance:
     
-    Start time: "YYYY-MM-DD HH:MM"
-    End time: "YYYY-MM-DD HH:MM"
+    Start time: "YYYY-MM-DDTHH:MM"
+    End time: "YYYY-MM-DDTHH:MM"
 
     You are not allowed to break the following formatting:
     task = "Meeting with client"
-    start_time = "2024-02-11 09:00"
-    end_time = "2024-02-11 10:00"
+    start_time = "2024-02-11T09:00"
+    end_time = "2024-02-11T10:00"
     
     If times are specified in the task description, start and end and durations must be followed throughly and can converge. [MODIFICATION WILL LEAD TO TERMINATION]
     Ensure a minimum break time between consecutive events.
@@ -171,7 +171,7 @@ def taskschedule():
         data = request.json  # Extract the JSON data sent from the frontend
         tasks = data.get("tasks")  # Extract the "tasks" list from the JSON data
         # Process the tasks data here
-        print("Received tasks:", tasks)
+        #print("Received tasks:", tasks)
         # Optionally, you can store the tasks in a database or perform 
         stripTasks = []
         for i in tasks:
@@ -180,6 +180,20 @@ def taskschedule():
         print("Modified tasks:", stripTasks)
         query_result = generate_scheduling_query(stripTasks)
         content = query_result.text
+        print(content)
+        
+        lines = content.strip().split('\n')
+        parsed_tasks = []
+        for line in lines:
+            print(line)
+            
+        
+        # parsed_tasks.append((task_name, start_time, end_time))
+        # for task in parsed_tasks:
+        #     print(task)
+
+        
+        
         # Construct response message
         response = {
             "content": content
