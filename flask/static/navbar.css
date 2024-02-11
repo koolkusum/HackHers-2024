@@ -2,12 +2,15 @@
     background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
 }
 
+.navbar {
+    height: 3.5em; /* Set a static height for the navbar */
+}
 .nav-link {
     color: #ffffff; /* Text color for the brand and links */
 }
 
 .nav-link {
-    transition: color 0.3s, font-size 0.3s; /* Add transition for a smooth effect */
+    transition: color 0.3s, font-size 0.5s; /* Add transition for a smooth effect */
 }
 
 .nav-link:hover {
@@ -34,10 +37,23 @@
 }
 
 .nav-link.active { 
-    transition: color 0.3s, font-size 0.3s; /* Add transition for a smooth effect */
+    transition: color 0.3s, font-size 0.5s; /* Add transition for a smooth effect */
 
 }
 .nav-link.active:hover {
     color: #ffd700;
+    font-size: 1.1em;
+  }
+
+  .dropdown-item{
+    background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
+    color: #ffffff;
+  }
+  .dropdown-item:hover{
+    color: #ffd700;
+    font-size: 1.1em;
+  }
+  .dropdown-menu{
+    background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
     font-size: 1.1em;
   }
