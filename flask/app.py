@@ -342,6 +342,11 @@ def productivity():
 def burnout():
     return render_template("burnout.html")
 
+@app.route('/prompts')
+def prompts():
+    return render_template("prompts.html")
+        
+
 @app.route('/submitproductivity', methods=["POST"])
 def submitproductivity():
     try:
@@ -364,6 +369,8 @@ def submitproductivity():
     except Exception as e:
         # Return an error response if there's an exception
         return jsonify({"success": False, "message": str(e)})
+    
+
 
 @app.route('/events')
 def get_events():
