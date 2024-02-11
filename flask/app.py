@@ -174,6 +174,14 @@ def generate_scheduling_query(tasks):
     result = model.generate_content(query + taskss)
     return result
 
+
+# @app.route("/finances", methods=["GET", "POST"])
+# def finances():
+#     if request.method == "POST":
+        
+#     else:
+#         render_template = render_template("finance.html")
+
 @app.route("/taskschedule", methods=["GET", "POST"])
 def taskschedule():
     if request.method == "POST":
