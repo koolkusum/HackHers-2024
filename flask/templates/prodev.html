@@ -45,12 +45,30 @@
                         <div class="card-body">
                             <h5 class="card-title">${event.title}</h5>
                             <p class="card-text">${event.description}</p>
+                            <button class="btn btn-primary" onclick="attendEvent('${event.title}')">Attend Event</button>
                         </div>
                     </div>
                 `;
                 careerEventsContainer.appendChild(eventCard);
             });
         });
+
+        function attendEvent(eventName) {
+            // Make an AJAX request to the server to submit the event name
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/prodev", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert("Attending event: " + eventName);
+                    } else {
+                        alert("Failed to attend event: " + eventName);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ eventName: eventName }));
+        }
     </script>
 </body>
 </html>
