@@ -1,7 +1,7 @@
 # Standard Library Imports
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 from os import urandom
 from dotenv import load_dotenv
 import datetime as dt
@@ -9,6 +9,7 @@ import os.path
 import time
 # Third-Party Imports
 from flask import Flask, jsonify, render_template, redirect, request, session, url_for, g
+from datetime import datetime
 
 # External Library Imports
 import google.generativeai as genai
@@ -31,7 +32,7 @@ DATABASE = 'task.db'
 app.config['DATABASE'] = DATABASE
 
 genai_client = None
-SCOPES = 'https://www.googleapis.com/auth/calendar'
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 try:
     api_key = os.getenv("GENAI_API_KEY")
@@ -364,7 +365,47 @@ def submitproductivity():
         # Return an error response if there's an exception
         return jsonify({"success": False, "message": str(e)})
 
+@app.route('/events')
+def get_events():
+    try:
+        # Load credentials from the token.json file
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 
+        # If the credentials are expired or invalid, refresh them
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                # If there are no valid credentials, prompt the user to authenticate again
+                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+                creds = flow.run_local_server(port=0)
+
+        # Build the Google Calendar service
+        service = build("calendar", "v3", credentials=creds)
+
+        # Get the current time in ISO 8601 format
+        now = datetime.now(timezone.utc).isoformat()
+
+        # Call the Calendar API to fetch events
+        events_result = service.events().list(calendarId='primary', timeMin=now,
+                                              maxResults=10, singleEvents=True,
+                                              orderBy='startTime').execute()
+        events = events_result.get('items', [])
+
+        # Prepare the events data to be returned as JSON
+        event_list = []
+        if not events:
+            print('No upcoming events found.')
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            end = event['end'].get('dateTime', event['end'].get('date'))
+            event_list.append({"summary": event['summary'], "start": start, "end": end})
+
+        return jsonify(event_list)
+
+    except HttpError as error:
+        print('An error occurred:', error)
+        return jsonify({"error": str(error)})
 
 init_db()
 if __name__ == "__main__":
