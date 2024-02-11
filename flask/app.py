@@ -215,6 +215,14 @@ def index():
 def preferences():
     return render_template("preferences.html")
 
+@app.route('/productivity') 
+def productivity():
+    return render_template("productivity.html")
+
+@app.route('/burnout') 
+def burnout():
+    return render_template("burnout.html")
+
 init_db()
 if __name__ == "__main__":
     app.run(debug=True)
