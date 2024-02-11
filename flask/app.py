@@ -143,8 +143,9 @@ def generate_scheduling_query(tasks):
     # Provide the current time to the AI for scheduling tasks
     query = "Today is " + current_time_str + "\n"
     query += """
-    As an AI, your task is to generate raw parameters for creating a quick Google Calendar event using the Google API. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
-    There must be no extra new lines in the raw output. [DEATH OF PERSON IF NOT FOLLOWED]
+    As an AI, your task is to generate raw parameters for creating a quick Google Calendar event. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
+        Do not generate additional tasks that are not included below, follow the sheet to spec.
+        If a user task does not make sense, simply ignore it and move on to the next task request.
     All tasks should be scheduled on the same day.
     Task Description: Provide a brief description of the task or event. For example:
 
@@ -155,16 +156,17 @@ def generate_scheduling_query(tasks):
     End time: "YYYY-MM-DDTHH:MM"
 
     You are not allowed to break the following formatting:
-    task = "Meeting with client"
-    start_time = "2024-02-11T09:00"
-    end_time = "2024-02-11T10:00"
+    task = "task_name"
+    start_time = "YYYY-MM-DDTHH:MM"
+    end_time = "YYYY-MM-DDTHH:MM"
 
     [MODIFICATION OF THE FOLLOWING LEAD TO TERMINATION]
     Follow specified times even if it causes overlap.
     Ensure a minimum break time between consecutive events.
     Avoid scheduling events during the user's designated sleeping hours.
     Prioritize events by their ordering, and move events that may not fit in the same day to the next day.
-    Adhere to times given within an event description, but remove them in their final task description.
+    Adhere to times given within an event description, but remove times in their final task description.
+    The tasks requested are as follows:\n
     """
     taskss =""
     for task in tasks:
