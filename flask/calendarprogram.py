@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+SCOPES = 'https://www.googleapis.com/auth/calendar'
 
 def main():
     creds = None
@@ -39,6 +39,33 @@ def main():
         for event in events:
             start = event["start"].get("dateTime", event["start"].get("date"))
             print(start, event["summary"])
+
+        event = {
+            "summary": "My Python Event",
+            "location": "Somewhere Online",
+            "description": "",
+            "colorId": 6,
+            "start": {
+                "dateTime": "2024-02-11T09:00:00+02:00",
+                "timeZone": "Europe/Vienna"
+            },
+
+            "end": {
+                "dateTime": "2024-02-11T17:00:00+02:00",
+                "timeZone": "Europe/Vienna"
+            },
+            # "recurrence": [
+            #     "RRULE: FREQ=DAILY;COUNT=3"
+            # ],
+            "attendees": [
+                {"email": "social@neuralnine.com"},
+                {"email": "pedropa828@gmail.com"},
+            ]
+        }
+
+
+        event = service.events().insert(calendarId = "primary", body = event).execute()
+        print(f"Event Created {event.get('htmlLink')}")
 
     except HttpError as error:
         print("An error occurred:", error)

@@ -1,6 +1,7 @@
 # Standard Library Imports
 import os
 import sqlite3
+from datetime import datetime
 from os import urandom
 from dotenv import load_dotenv
 
@@ -88,7 +89,7 @@ def signup():
         cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
         user_id = cursor.fetchone()[0]
 
-# Store user ID in the session
+        # Store user ID in the session
         session["user_id"] = user_id
 
         return redirect(url_for("home"))
@@ -125,18 +126,43 @@ def login():
 
 
 def generate_scheduling_query(tasks):
-    query = "Please input the tasks in the following format:\n"
-    query += "Task description: 'Task 1'\n"
-    query += "Start time: 'YYYY-MM-DD HH:MM'\n"
-    query += "End time: 'YYYY-MM-DD HH:MM'\n"
-    query += "Example:\n"
-    query += "Task 1: 'Meeting with client'\n"
-    query += "Start time: '2024-02-11 09:00'\n"
-    query += "End time: '2024-02-11 10:00'\n"
-    query += "Please input one task per line, separating each task with a newline character."    
+    
+    # Get the current time
+    current_time = datetime.now()
+
+    # Format the current time as a string in the format YYYY-MM-DD HH:MM
+    current_time_str = current_time.strftime("%Y-%m-%d %H:%M")
+    print(current_time_str)
+    # Provide the current time to the AI for scheduling tasks
+    query = "Today is " + current_time_str + "\n"
+    query += """
+    As an AI, your task is to generate raw parameters for creating a quick Google Calendar event using the Google API. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
+    All data must be bundled up, there can be no new lines inbetween.
+    All tasks should be scheduled on the same day.
+    Task Description: Provide a brief description of the task or event. For example:
+
+    Task Description: "Meeting with client"
+    Scheduling Parameters: Consider the user's work-life balance and aim to schedule the event at an appropriate time. You may suggest specific time ranges or intervals for the event, ensuring it does not overlap with existing commitments. For instance:
+    
+    Start time: "YYYY-MM-DDTHH:MM"
+    End time: "YYYY-MM-DDTHH:MM"
+
+    You are not allowed to break the following formatting:
+    task = "Meeting with client"
+    start_time = "2024-02-11T09:00"
+    end_time = "2024-02-11T10:00"
+
+    [MODIFICATION OF THE FOLLOWING LEAD TO TERMINATION]
+    Follow specified times even if it causes overlap.
+    Ensure a minimum break time between consecutive events.
+    Avoid scheduling events during the user's designated sleeping hours.
+    Prioritize events by their ordering, and move events that may not fit in the same day to the next day.
+    Adhere to times given within an event description, but remove them in their final task description.
+    """
     taskss =""
     for task in tasks:
-        taskss+=f"SCHEDULE TASK:'{task}'\n"
+        taskss+=f"'{task}'\n"
+    print(taskss)
     model = genai.GenerativeModel('models/gemini-pro')
     result = model.generate_content(query + taskss)
     return result
@@ -147,7 +173,7 @@ def taskschedule():
         data = request.json  # Extract the JSON data sent from the frontend
         tasks = data.get("tasks")  # Extract the "tasks" list from the JSON data
         # Process the tasks data here
-        print("Received tasks:", tasks)
+        #print("Received tasks:", tasks)
         # Optionally, you can store the tasks in a database or perform 
         stripTasks = []
         for i in tasks:
@@ -156,6 +182,20 @@ def taskschedule():
         print("Modified tasks:", stripTasks)
         query_result = generate_scheduling_query(stripTasks)
         content = query_result.text
+        print(content)
+        
+        lines = content.strip().split('\n')
+        parsed_tasks = []
+        for line in lines:
+            print(line)
+            
+        
+        # parsed_tasks.append((task_name, start_time, end_time))
+        # for task in parsed_tasks:
+        #     print(task)
+
+        
+        
         # Construct response message
         response = {
             "content": content
@@ -176,6 +216,14 @@ def index():
 @app.route('/preferences') 
 def preferences():
     return render_template("preferences.html")
+
+@app.route('/productivity') 
+def productivity():
+    return render_template("productivity.html")
+
+@app.route('/burnout') 
+def burnout():
+    return render_template("burnout.html")
 
 init_db()
 if __name__ == "__main__":
