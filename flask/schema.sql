@@ -12,11 +12,9 @@ CREATE TABLE users (
 
 CREATE TABLE tasks (
     TID INTEGER PRIMARY KEY AUTOINCREMENT,
-    userid INTEGER NOT NULL,
     task TEXT NOT NULL,
-    dateOfTaskStart DATETIME NOT NULL,
-    dateOfTaskEnd DATETIME NOT NULL,
-    duration INTEGER NOT NULL
+    dateOfTaskStart TEXT NOT NULL,
+    dateOfTaskEnd TEXT NOT NULL
 );
 
 CREATE TABLE preferences(

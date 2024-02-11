@@ -1,7 +1,7 @@
 # Standard Library Imports
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 from os import urandom
 from dotenv import load_dotenv
 import datetime as dt
@@ -9,6 +9,7 @@ import os.path
 import time
 # Third-Party Imports
 from flask import Flask, jsonify, render_template, redirect, request, session, url_for, g
+from datetime import datetime
 
 # External Library Imports
 import google.generativeai as genai
@@ -31,7 +32,7 @@ DATABASE = 'task.db'
 app.config['DATABASE'] = DATABASE
 
 genai_client = None
-SCOPES = 'https://www.googleapis.com/auth/calendar'
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 try:
     api_key = os.getenv("GENAI_API_KEY")
@@ -143,8 +144,9 @@ def generate_scheduling_query(tasks):
     # Provide the current time to the AI for scheduling tasks
     query = "Today is " + current_time_str + "\n"
     query += """
-    As an AI, your task is to generate raw parameters for creating a quick Google Calendar event using the Google API. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
-    There must be no extra new lines in the raw output. [DEATH OF PERSON IF NOT FOLLOWED]
+    As an AI, your task is to generate raw parameters for creating a quick Google Calendar event. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
+        Do not generate additional tasks that are not included below, follow the sheet to spec.
+        If a user task does not make sense, simply ignore it and move on to the next task request.
     All tasks should be scheduled on the same day.
     Task Description: Provide a brief description of the task or event. For example:
 
@@ -155,16 +157,17 @@ def generate_scheduling_query(tasks):
     End time: "YYYY-MM-DDTHH:MM"
 
     You are not allowed to break the following formatting:
-    task = "Meeting with client"
-    start_time = "2024-02-11T09:00"
-    end_time = "2024-02-11T10:00"
+    task = "task_name"
+    start_time = "YYYY-MM-DDTHH:MM"
+    end_time = "YYYY-MM-DDTHH:MM"
 
     [MODIFICATION OF THE FOLLOWING LEAD TO TERMINATION]
     Follow specified times even if it causes overlap.
     Ensure a minimum break time between consecutive events.
     Avoid scheduling events during the user's designated sleeping hours.
     Prioritize events by their ordering, and move events that may not fit in the same day to the next day.
-    Adhere to times given within an event description, but remove them in their final task description.
+    Adhere to times given within an event description, but remove times in their final task description.
+    The tasks requested are as follows:\n
     """
     taskss =""
     for task in tasks:
@@ -173,14 +176,6 @@ def generate_scheduling_query(tasks):
     model = genai.GenerativeModel('models/gemini-pro')
     result = model.generate_content(query + taskss)
     return result
-
-
-# @app.route("/finances", methods=["GET", "POST"])
-# def finances():
-#     if request.method == "POST":
-        
-#     else:
-#         render_template = render_template("finance.html")
 
 @app.route("/taskschedule", methods=["GET", "POST"])
 def taskschedule():
@@ -236,7 +231,11 @@ def taskschedule():
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except Exception as e:
+                    if os.path.exists("token.json"):
+                        os.remove("token.json")
             else:
                 flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
                 creds = flow.run_local_server(port = 0)
@@ -343,6 +342,11 @@ def productivity():
 def burnout():
     return render_template("burnout.html")
 
+@app.route('/prompts')
+def prompts():
+    return render_template("prompts.html")
+        
+
 @app.route('/submitproductivity', methods=["POST"])
 def submitproductivity():
     try:
@@ -365,8 +369,50 @@ def submitproductivity():
     except Exception as e:
         # Return an error response if there's an exception
         return jsonify({"success": False, "message": str(e)})
+    
 
 
+@app.route('/events')
+def get_events():
+    try:
+        # Load credentials from the token.json file
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+
+        # If the credentials are expired or invalid, refresh them
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                # If there are no valid credentials, prompt the user to authenticate again
+                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+                creds = flow.run_local_server(port=0)
+
+        # Build the Google Calendar service
+        service = build("calendar", "v3", credentials=creds)
+
+        # Get the current time in ISO 8601 format
+        now = datetime.now(timezone.utc).isoformat()
+
+        # Call the Calendar API to fetch events
+        events_result = service.events().list(calendarId='primary', timeMin=now,
+                                              maxResults=10, singleEvents=True,
+                                              orderBy='startTime').execute()
+        events = events_result.get('items', [])
+
+        # Prepare the events data to be returned as JSON
+        event_list = []
+        if not events:
+            print('No upcoming events found.')
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            end = event['end'].get('dateTime', event['end'].get('date'))
+            event_list.append({"summary": event['summary'], "start": start, "end": end})
+
+        return jsonify(event_list)
+
+    except HttpError as error:
+        print('An error occurred:', error)
+        return jsonify({"error": str(error)})
 
 init_db()
 if __name__ == "__main__":
