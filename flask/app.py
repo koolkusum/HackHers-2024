@@ -134,6 +134,10 @@ def home():
         # Optionally, you can store the tasks in a database or perform 
     else:
         return render_template("home.html")
+    
+@app.route('/')
+def index():
+    return redirect(url_for('home'))
 
 init_db()
 if __name__ == "__main__":
