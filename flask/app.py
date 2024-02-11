@@ -126,11 +126,11 @@ def login():
 
 def generate_scheduling_query(tasks):
     query = "In the format of datetime start, datetime end return a list of the best way the schedule these tasks today:"
-    tasks =""
+    taskss =""
     for task in tasks:
-        task+=f"SCHEDULE TASK:'{task}'\n"
+        taskss+=f"SCHEDULE TASK:'{task}'\n"
     model = genai.GenerativeModel('models/gemini-pro')
-    result = model.generate_content(query + tasks)
+    result = model.generate_content(query + taskss)
     return result
 
 @app.route("/taskschedule", methods=["GET", "POST"])
@@ -147,13 +147,12 @@ def taskschedule():
             stripTasks.append(i)
         print("Modified tasks:", stripTasks)
         query_result = generate_scheduling_query(stripTasks)
-        
+        content = query_result.text
         # Construct response message
         response = {
-            "message": "Tasks scheduled successfully",
-            "query_result": query_result  # Include the query result in the response
+            "content": content
         }
-
+        print(content)
         return jsonify(response)
     else:
         return render_template("taskschedule.html")
