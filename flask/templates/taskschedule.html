@@ -22,11 +22,29 @@
 
         .delete-btn {
             color: #dc3545;
-            font-size: 1rem;
+            font-size: 1.5rem; /* Increase delete button size */
+            background-color: transparent;
+            border: none;
+            margin-left: auto;
+            padding: 0.5rem; /* Increase padding for button */
         }
 
         .delete-btn:hover {
-            color: #a71d2a;
+            color: white;
+            background-color: #dc3545; /* Change background color of delete button on hover */
+        }
+
+        .delete-btn:focus {
+            outline: none; /* Remove outline when delete button is focused */
+        }
+
+        .list-group-item:hover {
+            background-color: #cce5ff !important; /* Change background color of list group item on hover */
+        }
+
+        /* Highlight list group item only when hovering over delete button */
+        .list-group-item .delete-btn:hover ~ * {
+            background-color: transparent !important;
         }
     </style>
 </head>
