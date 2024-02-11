@@ -184,23 +184,18 @@ def taskschedule():
         content = query_result.text
         print(content)
         
-        lines = content.strip().split('\n')
-        parsed_tasks = []
-        for line in lines:
-            print(line)
-            
+        x = 0
+        lines = content.split('\n')
+        schedule = []
+        print(lines)
         
-        # parsed_tasks.append((task_name, start_time, end_time))
-        # for task in parsed_tasks:
-        #     print(task)
 
-        
         
         # Construct response message
         response = {
             "content": content
         }
-        print(content)
+        #print(content)
         return jsonify(response)
     else:
         return render_template("taskschedule.html")
