@@ -331,6 +331,20 @@ def home():
 def index():
     return render_template("main.html")
 
+@app.route('/prodev', methods=["GET", "POST"])
+def prodev():
+    if request.method == "POST":
+        event_name = request.json.get('eventName')
+        print(event_name)
+        if event_name:
+            # Process the event name as needed (e.g., save to database)
+            print("Attending event:", event_name)
+            return {"message": f"Attending event: {event_name}"}, 200
+        else:
+            return {"error": "Event name not provided in request body"},
+    else:
+       return render_template("prodev.html")
+
 @app.route('/preferences') 
 def preferences():
     return render_template("preferences.html")
