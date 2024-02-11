@@ -92,7 +92,7 @@ def signup():
 # Store user ID in the session
         session["user_id"] = user_id
 
-        return redirect(url_for("login"))
+        return redirect(url_for("home"))
 
     return render_template("signup.html")
 
@@ -118,7 +118,7 @@ def login():
         if user[4] == passw:  # Assuming both are plain text
             # Store user information in the session
             session["user_id"] = user[0]
-            return redirect(url_for("signup"))
+            return redirect(url_for("home"))
         else:
             return render_template("error.html")
 
@@ -126,7 +126,7 @@ def login():
 
 
 @app.route("/home", methods=["GET", "POST"])
-def mainpage():
+def home():
     if request.method == "POST":
         data = request.json  # Extract the JSON data sent from the frontend
         tasks = data.get("tasks")  # Extract the "tasks" list from the JSON data
