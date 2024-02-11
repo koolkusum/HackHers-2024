@@ -125,7 +125,7 @@ def login():
 
 
 @app.route("/taskschedule", methods=["GET", "POST"])
-def home():
+def taskschedule():
     if request.method == "POST":
         data = request.json  # Extract the JSON data sent from the frontend
         tasks = data.get("tasks")  # Extract the "tasks" list from the JSON data
@@ -137,6 +137,10 @@ def home():
         return jsonify(response)
     else:
         return render_template("taskschedule.html")
+   
+@app.route('/home') 
+def home():
+    return render_template("home.html")
     
 @app.route('/')
 def index():
