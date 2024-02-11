@@ -119,12 +119,12 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/mainpage", methods=["GET", "POST"])
-def mainpage():
-    if request.method == "POST":
-        # add later
-    else:
-        return render_template("mainpage.html")
+# @app.route("/mainpage", methods=["GET", "POST"])
+# def mainpage():
+#     if request.method == "POST":
+#         # add later
+#     else:
+#         return render_template("mainpage.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
