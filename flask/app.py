@@ -182,14 +182,28 @@ def taskschedule():
         print("Modified tasks:", stripTasks)
         query_result = generate_scheduling_query(stripTasks)
         content = query_result.text
+        content = '\n'.join([line for line in content.split('\n') if line.strip()])
         print(content)
         
         x = 0
         lines = content.split('\n')
         schedule = []
+        print(len(lines))
+        schedule = []
         print(lines)
-        
 
+        for x in range(0, len(lines)-2, 3):
+            if lines[x] == '': continue
+            else:
+                task_info ={
+                    "task": lines[x].split(" = ")[1].strip("'"),
+                    "start_time": lines[x+1].split(" = ")[1].strip("'"),
+                    "end_time": lines[x+2].split(" = ")[1].strip("'")
+                }
+                schedule.append(task_info)
+        print(schedule)
+        
+        
         
         # Construct response message
         response = {
