@@ -132,6 +132,7 @@ def home():
         # Process the tasks data here
         print("Received tasks:", tasks)
         # Optionally, you can store the tasks in a database or perform 
+        
         response = {"message": "Tasks received successfully"}
         return jsonify(response)
     else:
