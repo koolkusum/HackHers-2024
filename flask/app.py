@@ -318,7 +318,8 @@ def taskschedule():
             "content": content
         }
         #print(content)
-        return jsonify(response)
+        successString = "Tasks Successfully Added to Calendar"
+        return jsonify(successString)
     else:
         return render_template("taskschedule.html")
    
