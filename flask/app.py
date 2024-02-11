@@ -329,7 +329,7 @@ def home():
     
 @app.route('/')
 def index():
-    return redirect(url_for('home'))
+    return render_template("main.html")
 
 @app.route('/preferences') 
 def preferences():
@@ -370,8 +370,6 @@ def submitproductivity():
     except Exception as e:
         # Return an error response if there's an exception
         return jsonify({"success": False, "message": str(e)})
-    
-
 
 @app.route('/events')
 def get_events():

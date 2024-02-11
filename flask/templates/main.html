@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px; /* Adjust as needed */
+        }
+
+        .member-card {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .member-img {
+            border-radius: 50%;
+            max-width: 150px;
+            margin-bottom: 15px;
+        }
+
+        .header {
+            margin-bottom: 10%;
+        }
+
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="header">
+        <img class="rounded mx-auto d-block" width = 500px length = 500px src="{{ url_for('static', filename='logo.png') }}">
+        <div class="container">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h1 class="card-title" style="padding-top:10px">Get ahead and craft your success!</h1>
+                    <h2 class="card-subtitle mb-2 text-muted">Navigate your career journey with confidence by having your daily tasks organized with simple prompts.</h2>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- About Us Section -->
+    <!-- About Us Section -->
+    <div class="container-fluid bg-light text-dark py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Member 1 -->
+                <div class="col-md-4">
+                    <div class="member-card">
+                        <img src="{{url_for('static', filename='resources/mugshots/khushi.jpg')}}" alt="Member 1" class="member-img">
+                        <h3>Pedro</h3>
+                        <p>Founder</p>
+                        <p>Likes to take naps sometimes, but is a weapon of programming prowess once awoken.</p>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="col-md-4">
+                    <div class="member-card">
+                        <img src="{{url_for('static', filename='resources/mugshots/kusum.jpg')}}" alt="Kusum Gandham" class="member-img">
+                        <h3>Kusum Gandham</h3>
+                        <p>Backend Developer</p>
+                        <p>Notable for her ability to problem solve and squash bugs, Kusum develops the backend of the app, as well as the schemas for the database. Also is Elian's mentor.</p>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="col-md-4">
+                    <div class="member-card">
+                        <img src="{{url_for('static', filename='resources/mugshots/elian.jpg')}}" alt="Member 3" class="member-img">
+                        <h3>Elian Deogracia-Brito</h3>
+                        <p>Front End Developer</p>
+                        <p>Enjoys the challenges programming brings on. Will participate in hackathons despite homework due.</p>
+                    </div>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="col-md-4">
+                    <div class="member-card">
+                        <img src="{{url_for('static', filename='resources/mugshots/member4.jpg')}}" alt="Member 4" class="member-img">
+                        <h3>Member 4</h3>
+                        <p>Role</p>
+                        <p>Description</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
