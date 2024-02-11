@@ -6,6 +6,8 @@
     <title>User Tasks</title>
     <!-- Include Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Import Protest Riot font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Riot:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* Add custom styles if needed */
         /* Adjustments to match Bootstrap styling */
@@ -18,15 +20,63 @@
             cursor: move;
             display: flex;
             align-items: center;
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
         }
 
         .delete-btn {
             color: #dc3545;
-            font-size: 1rem;
+            font-size: 1.5rem; /* Increase delete button size */
+            background-color: transparent;
+            border: none;
+            margin-left: auto;
+            padding: 0.5rem; /* Increase padding for button */
         }
 
         .delete-btn:hover {
-            color: #a71d2a;
+            color: white;
+            background-color: #dc3545; /* Change background color of delete button on hover */
+        }
+
+        .delete-btn:focus {
+            outline: none; /* Remove outline when delete button is focused */
+        }
+
+        .list-group-item:hover {
+            background-color: #cce5ff !important; /* Change background color of list group item on hover */
+        }
+
+        /* Highlight list group item only when hovering over delete button */
+        .list-group-item .delete-btn:hover ~ * {
+            background-color: transparent !important;
+        }
+
+        /* Center the title */
+        .title {
+            text-align: center;
+            font-family: 'Protest Riot', sans-serif; /* Set font to Protest Riot */
+            font-size: 100px; /* Increase font size */
+            margin-bottom: 50px;
+        }
+
+        /* Style the Submit Tasks button */
+        #submitBtn {
+            text-align: center;
+        }
+
+        #submitBtn button {
+            font-family: 'Protest Riot', sans-serif; /* Set font to Protest Riot */
+            font-size: 30px; /* Increase font size */
+            height: 110%;
+            width: 100%; /* Make button full width */
+            max-width: 300px; /* Limit button width */
+            margin: 0 auto; /* Center button */
+            display: block; /* Ensure button is block-level element */
+        }
+
+        /* Increase height of input box */
+        #task {
+            height: 50px; /* Set desired height */
         }
     </style>
 </head>
@@ -34,13 +84,12 @@
     {% include 'navbar.html' %}
 
     <div class="container mt-4">
-        <h2>User Tasks</h2>
+        <h2 class="title">Your Tasks</h2>
         <div id="taskInput" class="input-group mb-3">
             <input type="text" id="task" class="form-control" placeholder="Enter your task">
             <button class="btn btn-primary" type="button" onclick="addTask()">Add Task</button>
         </div>
         <div id="taskList">
-            <h3>Tasks:</h3>
             <ul id="list" class="list-group" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
         </div>
         <div id="submitBtn" style="display: none;">
@@ -133,7 +182,8 @@
         function drop(ev) {
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
-            var draggedItem = document.getElementById(data);
+            var draggedItem = document.getElementById(data
+            );
             var target = ev.target.closest('ul');
             if (target && target.id === 'list') {
                 var targetItem = ev.target.closest('li');

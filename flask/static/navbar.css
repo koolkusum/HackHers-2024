@@ -7,14 +7,28 @@
 }
 .nav-link {
     color: #ffffff; /* Text color for the brand and links */
+    flex: 1;
+    text-align: center;
+    transition: color 0.3s, font-size 0.3s;
+}
+.nav-link:hover {
+    color: rgb(240, 225, 48); /* Text color for the brand and links */
+    transform: scale(1.2);
+}
+.nav-link.active:hover {
+    color: rgb(240, 225, 48); /* Text color for the brand and links */
+    transform: scale(1.2);
 }
 
 .navbar-brand {
     color: #ffffff; /* Text color for the brand and links */
+    margin: 0; /* Remove any default margin */
+    transition: color 0.3s, font-size 0.3s;
+    
 }
 .navbar-brand:hover {
-    animation: rainbowEffect 2s infinite; 
-        }
+    animation: rainbowEffect 2s infinite;
+ }
 
     @keyframes rainbowEffect {
             0% { color: rgb(216, 0, 216); }
@@ -47,7 +61,7 @@
         .navbar-brand-container:hover img {
             opacity: 0;
             z-index: -1;
-        }
+            transform: scale(1.2);        }
 
         .navbar-brand {
             position: absolute;
@@ -62,4 +76,16 @@
 
         .navbar-brand-container:hover .navbar-brand {
             opacity: 1;
+        }
+
+        .dropdown-menu{
+            background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+            color: white;
+        }
+        .dropdown-item {
+            color: #ffffff; /* Text color of each dropdown item */
+        }
+        .dropdown-item:hover{
+            background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+            color: rgb(240, 225, 48);
         }
