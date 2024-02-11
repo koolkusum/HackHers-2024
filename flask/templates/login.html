@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html>
-<style type="text/css">
-</style>
+	<style type="text/css">
+       .form-header {
+            color: purple;
+        }
+		.form-header:hover {
+    animation: rainbowEffect 3s infinite;
+        }
+
+        @keyframes rainbowEffect {
+            0% { color: rgb(216, 0, 216); }
+            16.666% { color: rgb(255, 145, 0); }
+            33.333% { color: rgb(255, 0, 0); }
+            50% { color: green; }
+            66.666% { color: yellow; }
+            83.333% { color: orange; }
+            100% { color: red; }
+        }
+    </style>
 
 <head>
 	<title>Login</title>
@@ -16,11 +32,11 @@
 
 <form method="post" class="form-signin" style="margin-top:-100px">
 	<div class="container">
-	<img class="rounded mx-auto d-block" width = 150px length = 150px src="{{ url_for('static', filename='resources/magic_resume.png') }}">
-	<h2 class="form-header" id="form-title1">BalanSync Login</h2>
+	<img class="rounded mx-auto d-block" width = 250px length = 250px src="{{ url_for('static', filename='logo.png') }}">
+	<h2 class="form-header" id="form-title1"> Login</h2>
 	<input type="email" name = "email" id="email" class="form-control" placeholder="name@example.com" required autofocus>
-	<input type="password" name = "passw" id="passw" class="form-control" placeholder="password" required>
-	<button class="btn btn-lg btn-primary btn-block btn-light" type="submit">Sign in</button>
+	<input style="margin-top: 10px;" type="password" name = "passw" id="passw" class="form-control" placeholder="password" required>
+	<button class="btn btn-lg btn-primary btn-block" type="submit" style="background-color: purple; color: white; margin-top: 10px;">Sign in</button>
 	<p id="form-text" style="margin-top: 20px;">Don't have an account?<br><a style="color: rgb(255, 255, 255)" href="{{ url_for('signup') }}">Sign up</a></p>
 	</div>
 </form>

@@ -1,5 +1,23 @@
 <html lang="en">
 <head>
+    <style type="text/css">
+        .form-header {
+            /* Your existing styles */
+        }
+
+        /* New style rule for changing the font color to purple */
+        .form-header {
+            color: purple;
+        }
+        .fixed-width-div {
+            width: 7em; /* Adjust the width as needed */
+        }
+        .fixed-width-div-search {
+            width: 15em; /* Adjust the width as needed */
+            margin-left: auto;
+        }
+
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BalancSync</title>
@@ -14,18 +32,28 @@
 </head>
 <nav class="navbar navbar-expand-lg bg-primary border-bottom" data-bs-theme="dark">
     <div class="container">
-        <a class="navbar-brand" href="#">BalancSync</a>
+        <div class="fixed-width-div">
+            <div class="navbar-brand-container">
+                <img width = 250px length = 250px src="{{ url_for('static', filename='logo.png') }}">
+                <a class="navbar-brand" href="#">BalancSync</a>
+            </div>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="fixed-width-div">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/home">Home</a>
                 </li>
+                </div>
+                <div class="fixed-width-div">
                 <li class="nav-item">
                     <a class="nav-link" href="/preferences">Preferences</a>
                 </li>
+                </div>
+                <div class="fixed-width-div">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="/taskschedule" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Scheduling
@@ -35,12 +63,15 @@
                         <li><a class="dropdown-item" href="/meetings">Meetings</a></li>
                     </ul>
                 </li>
+                </div>
 
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <div class="fixed-width-div-search">
+            <form class="d-flex justify-content-end" role="search">
+                <input class="form-control me-2 ml-auto" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+            </div>
         </div>
     </div>
 </nav>
