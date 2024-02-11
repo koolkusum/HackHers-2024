@@ -148,7 +148,7 @@ def generate_scheduling_query(tasks):
     As an AI, your task is to generate raw parameters for creating a quick Google Calendar event. Your goal is to ensure the best work-life balance for the user, including creating a consistent sleeping schedule. Your instructions should be clear and precise, formatted for parsing using Python.
         Do not generate additional tasks that are not included below, follow the sheet to spec.
         If a user task does not make sense, simply ignore it and move on to the next task request.
-    All tasks should be scheduled on the same day.
+    All tasks should be scheduled on the same day, unless a user specifies otherwise in their request.
     Task Description: Provide a brief description of the task or event. For example:
 
     Task Description: "Meeting with client"
