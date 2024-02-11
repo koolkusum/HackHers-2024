@@ -1,5 +1,5 @@
 .bg-primary {
-    background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
+    background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
 }
 
 .navbar {
@@ -9,51 +9,57 @@
     color: #ffffff; /* Text color for the brand and links */
 }
 
-.nav-link {
-    transition: color 0.3s, font-size 0.5s; /* Add transition for a smooth effect */
+.navbar-brand {
+    color: #ffffff; /* Text color for the brand and links */
 }
+.navbar-brand:hover {
+    animation: rainbowEffect 2s infinite; 
+        }
 
-.nav-link:hover {
-    color: #ffd700; /* Text color on hover */
-    font-size: 1.1em;
-}
+    @keyframes rainbowEffect {
+            0% { color: rgb(216, 0, 216); }
+            16.666% { color: rgb(255, 145, 0); }
+            33.333% { color: rgb(255, 0, 0); }
+            50% { color: green; }
+            66.666% { color: yellow; }
+            83.333% { color: orange; }
+            100% { color: red; }
+    } 
+    
+        .navbar-brand-container {
+            position: relative;
+            width: 150px; /* Set the width of your container */
+            height: 40px; /* Set the height of your container */
+            overflow: hidden;
+        }
 
-.navbar-toggler-icon {
-    background-color: #ffffff; /* Color for the toggler icon */
-}
+        .navbar-brand-container img {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+            z-index: 1;
+            transition: opacity 0.5s ease-in-out; /* Adjust the transition duration and timing function as needed */
+        }
 
+        .navbar-brand-container:hover img {
+            opacity: 0;
+            z-index: -1;
+        }
 
-.navbar-toggler {
-    border-color: #ffffff; /* Border color for the toggler button */
-}
-.navbar-toggler:hover {
-    color: #ffd700; /* Text color on hover */
-    font-size: 1.1em;
-}
+        .navbar-brand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            opacity: 0;
+            z-index: 2;
+            transition: opacity 0.5s ease-in-out; /* Adjust the transition duration and timing function as needed */
+        }
 
-.navbar-toggler:hover {
-    color: #ffd700; /* Text color on hover */
-    font-size: 1.1em;
-}
-
-.nav-link.active { 
-    transition: color 0.3s, font-size 0.5s; /* Add transition for a smooth effect */
-
-}
-.nav-link.active:hover {
-    color: #ffd700;
-    font-size: 1.1em;
-  }
-
-  .dropdown-item{
-    background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
-    color: #ffffff;
-  }
-  .dropdown-item:hover{
-    color: #ffd700;
-    font-size: 1.1em;
-  }
-  .dropdown-menu{
-    background: linear-gradient(to right, #1f0fad, #37015d); /* Replace with your desired background color */
-    font-size: 1.1em;
-  }
+        .navbar-brand-container:hover .navbar-brand {
+            opacity: 1;
+        }

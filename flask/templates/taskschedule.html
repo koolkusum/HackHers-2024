@@ -20,6 +20,10 @@
         .delete-btn {
             margin-left: 10px;
         }
+
+        .list-group-item {
+            cursor: move;
+        }
     </style>
 </head>
 <body>
@@ -33,7 +37,7 @@
         </div>
         <div id="taskList">
             <h3>Tasks:</h3>
-            <ul id="list" class="list-group">
+            <ul id="list" class="list-group" ondrop="drop(event)" ondragover="allowDrop(event)">
             </ul>
         </div>
         <div id="submitBtn" style="display: none;">
@@ -55,6 +59,9 @@
                 var listItem = document.createElement("li");
                 listItem.textContent = task;
                 listItem.className = "list-group-item";
+                listItem.setAttribute("draggable", "true");
+                listItem.setAttribute("ondragstart", "drag(event)");
+                listItem.id = "task" + (tasksAdded + 1);
 
                 // Set name attribute dynamically
                 listItem.setAttribute("name", "list" + (tasksAdded + 1));
@@ -78,6 +85,8 @@
                 if (tasksAdded >= 5) {
                     document.getElementById("submitBtn").style.display = "block";
                 }
+
+                updateTaskIds(); // Update task IDs after adding a new task
             } else {
                 alert("Please enter a valid task!");
             }
@@ -105,6 +114,45 @@
                 .catch((error) => {
                     console.error('Error:', error);
                 });
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var draggedItem = document.getElementById(data);
+    var target = ev.target.closest('ul');
+    if (target && target.id === 'list') {
+        var targetItem = ev.target.closest('li');
+        if (targetItem) {
+            var targetIndex = Array.from(target.children).indexOf(targetItem);
+            var list = document.getElementById('list');
+            var draggedIndex = Array.from(list.children).indexOf(draggedItem);
+            if (draggedIndex !== -1 && draggedIndex !== targetIndex) {
+                if (draggedIndex < targetIndex) {
+                    list.insertBefore(draggedItem, targetItem.nextSibling);
+                } else {
+                    list.insertBefore(draggedItem, targetItem);
+                }
+                updateTaskIds();
+            }
+        }
+    }
+}
+
+
+        function updateTaskIds() {
+            var listItems = document.querySelectorAll("#list li");
+            listItems.forEach(function (item, index) {
+                item.id = "task" + (index + 1);
+            });
         }
     </script>
 </body>
