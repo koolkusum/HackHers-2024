@@ -5,7 +5,7 @@ from os import urandom
 from dotenv import load_dotenv
 
 # Third-Party Imports
-from flask import Flask, render_template, redirect, request, session, url_for, g
+from flask import Flask, jsonify, render_template, redirect, request, session, url_for, g
 
 # External Library Imports
 import google.generativeai as genai
@@ -124,7 +124,7 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/home", methods=["GET", "POST"])
+@app.route("/taskschedule", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
         data = request.json  # Extract the JSON data sent from the frontend
@@ -132,8 +132,10 @@ def home():
         # Process the tasks data here
         print("Received tasks:", tasks)
         # Optionally, you can store the tasks in a database or perform 
+        response = {"message": "Tasks received successfully"}
+        return jsonify(response)
     else:
-        return render_template("home.html")
+        return render_template("taskschedule.html")
     
 @app.route('/')
 def index():
