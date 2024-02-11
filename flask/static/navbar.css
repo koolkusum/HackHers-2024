@@ -77,3 +77,15 @@
         .navbar-brand-container:hover .navbar-brand {
             opacity: 1;
         }
+
+        .dropdown-menu{
+            background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+            color: white;
+        }
+        .dropdown-item {
+            color: #ffffff; /* Text color of each dropdown item */
+        }
+        .dropdown-item:hover{
+            background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+            color: rgb(240, 225, 48);
+        }
