@@ -44,6 +44,13 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+def init_db():
+    with app.app_context():
+        db = get_db()
+        with app.open_resource('schema.sql') as f:
+            db.executescript(f.read().decode('utf-8'))
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -66,11 +73,11 @@ def signup():
 
         db = get_db()
         cursor = db.cursor()
+       # print("Email:", email)
 
         # Check if email already exists in the database
         cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         existing_user = cursor.fetchone()
-
         if existing_user:
             return render_template("error.html")
 
@@ -81,10 +88,12 @@ def signup():
         )
         db.commit()
 
-        # Store user information in the session
-        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
-        user = cursor.fetchone()
-        session["user_id"] = user["id"]
+        # Retrieve the inserted user's ID
+        cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+        user_id = cursor.fetchone()[0]
+
+# Store user ID in the session
+        session["user_id"] = user_id
 
         return redirect(url_for("login"))
 
@@ -130,6 +139,7 @@ def mainpage():
     else:
         return render_template("mainpage.html")
 
+init_db()
 if __name__ == "__main__":
     app.run(debug=True)
 
