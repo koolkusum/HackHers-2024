@@ -203,8 +203,8 @@ def taskschedule():
             else:
                 task_info ={
                     "task": lines[x].split(" = ")[1].strip("'"),
-                    "start_time": lines[x+1].split(" = ")[1].strip("'").strip("\""),
-                    "end_time": lines[x+2].split(" = ")[1].strip("'").strip("\"")
+                    "start_time": lines[x+1].split(" = ")[1].strip("'").strip("\"") + ":00",
+                    "end_time": lines[x+2].split(" = ")[1].strip("'").strip("\"") + ":00"
                 }
                 schedule.append(task_info)
         # print(schedule)
@@ -268,16 +268,14 @@ def taskschedule():
             # event = service.events().insert(calendarId = "primary", body = event).execute()
             # print(f"Event Created {event.get('htmlLink')}")
             print(schedule)
-            for task in schedule:
-                print(task)
+            for query in schedule:
+                print(query)
             #     time.wait(5)
-                taskSummary = "test"
-                taskStart = "2024-02-11T14:00"
-                taskEnd = "2024-02-11T16:00"
+                taskSummary = query['task']
+                taskStart = query['start_time']
+                taskEnd = query['end_time']
                 
-            #     # Add time zone offset to date-time strings (assuming they're in ET)
-            #     taskStart += "+02:00"
-            #     taskEnd += "+02:00"
+            #     # Add time zone offset to date-time strings (assuming they're in ET
                 
                 event = {
                     "summary": taskSummary,
