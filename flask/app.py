@@ -331,6 +331,10 @@ def home():
 def index():
     return redirect(url_for('home'))
 
+@app.route('/prodev')
+def carrerdev():
+    return render_template("prodev.html")
+
 @app.route('/preferences') 
 def preferences():
     return render_template("preferences.html")
