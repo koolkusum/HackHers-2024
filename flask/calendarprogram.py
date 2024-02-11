@@ -12,6 +12,7 @@ import time
 SCOPES = 'https://www.googleapis.com/auth/calendar'
 
 def main():
+    
     local_time = dt.datetime.now()
     local_timezone = dt.datetime.now(dt.timezone.utc).astimezone().tzinfo
     current_time = dt.datetime.now(local_timezone)
@@ -19,6 +20,7 @@ def main():
     offset_string = list(timezone_offset)
     offset_string.insert(3, ':')
     timeZone = "".join(offset_string)
+    print(timeZone)
     creds = None
 
     if os.path.exists("token.json"):
@@ -50,68 +52,22 @@ def main():
 
 
         event = {
-            "summary": "My Python Event",
-            "location": "Somewhere Online",
-            "description": "",
+            "summary": "Tech Career Fair",
+            "location": "Busch Student Center",
+            "description": "Explore job opportunities and network with top tech companies at our annual career fair.",
             "colorId": 6,
             "start": {
-                "dateTime": "2024-02-11T09:00:00" + timeZone,
-                # "timeZone": "Eastern Time"
+                "dateTime": "2024-02-12T14:00:00" + timeZone,
             },
 
             "end": {
-                "dateTime": "2024-02-11T17:00:00" + timeZone,
-                # "timeZone": "Eastern Time"
+                "dateTime": "2024-02-12T16:00:00" + timeZone,
             },
-            # "recurrence": [
-            #     "RRULE: FREQ=DAILY;COUNT=3"
-            # ],
-            # "attendees": [
-            #     {"email": "social@neuralnine.com"},
-            #     {"email": "pedropa828@gmail.com"},
-            # ]
         }
 
 
         event = service.events().insert(calendarId = "primary", body = event).execute()
         print(f"Event Created {event.get('htmlLink')}")
-        # task = 'cook food'
-        # start_time = "2024-02-11 18:30"
-        # end_time = "2024-02-11 19:30"
-
-        # task = 'wash the car'
-        # start_time = "2024-02-11 19:45"
-        # end_time = "2024-02-11 20:30"
-
-        # task = 'talk to interns'
-        # start_time = "2024-02-11 21:00"
-        # end_time = "2024-02-11 22:00"
-        # list = app.generate_scheduling_query()
-        # for i in list:
-        #     event = {
-        #         "summary": i[0],
-        #         # "location": "Somewhere Online",
-        #         # "description": "",
-        #         "colorId": 6,
-        #         "start": {
-        #             "dateTime": "2024-02-11T09:00:00-05:00",
-        #             # "timeZone": "Eastern Time"
-        #         },
-
-        #         "end": {
-        #             "dateTime": "2024-02-11T17:00:00-05:00",
-        #             # "timeZone": "Eastern Time"
-        #         },
-        #         # "recurrence": [
-        #         #     "RRULE: FREQ=DAILY;COUNT=3"
-        #         # ],
-        #         # "attendees": [
-        #         #     {"email": "social@neuralnine.com"},
-        #         #     {"email": "pedropa828@gmail.com"},
-        #         # ]
-        #     }
-        #     event = service.events().insert(calendarId = "primary", body = event).execute()
-        #     print(f"Event Created {event.get('htmlLink')}")
 
     except HttpError as error:
         print("An error occurred:", error)
