@@ -6,8 +6,8 @@
 
 
 <div style="text-align: center; background: ; width:300px;">
-    <img src="imgs/logo.png" alt="Logo"  width="300" height="300">
-<h1 style="color:black;font-family:'Arial'">ResumeReviser</h1>
+    <img src="flask/static/logo.png" alt="Logo"  width="300" height="300">
+<h1 style="color:black;font-family:'Times New Roman'">BalanSync</h1>
 </div>
 
 </div>
