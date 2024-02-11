@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import datetime as dt
 import os.path
 import time
+import calendarprogram
 # Third-Party Imports
 from flask import Flask, jsonify, render_template, redirect, request, session, url_for, g
 from datetime import datetime
@@ -339,6 +340,7 @@ def prodev():
         if event_name:
             # Process the event name as needed (e.g., save to database)
             print("Attending event:", event_name)
+            calendarprogram.addSchedule()
             return {"message": f"Attending event: {event_name}"}, 200
         else:
             return {"error": "Event name not provided in request body"},

@@ -11,7 +11,7 @@ import time
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
 
-def main():
+def addSchedule():
     
     local_time = dt.datetime.now()
     local_timezone = dt.datetime.now(dt.timezone.utc).astimezone().tzinfo
