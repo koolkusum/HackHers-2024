@@ -117,9 +117,9 @@ def login():
             return render_template("error.html")
 
         # Compare the provided password with the password stored in the database
-        if user["passw"] == passw:  # Assuming both are plain text
+        if user[4] == passw:  # Assuming both are plain text
             # Store user information in the session
-            session["user_id"] = user["id"]
+            session["user_id"] = user[0]
             return redirect(url_for("signup"))
         else:
             return render_template("error.html")
