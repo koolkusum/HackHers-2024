@@ -1,9 +1,9 @@
 .bg-primary {
-    background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+    background: linear-gradient(to right, #9555c9, purple); /* Replace with your desired background color */
 }
 
 .navbar {
-    height: 3.5em; /* Set a static height for the navbar */
+    height: 2.7em; /* Set a static height for the navbar */
 }
 .nav-link {
     color: #ffffff; /* Text color for the brand and links */
@@ -19,73 +19,44 @@
     color: rgb(240, 225, 48); /* Text color for the brand and links */
     transform: scale(1.2);
 }
-
-.navbar-brand {
-    color: #ffffff; /* Text color for the brand and links */
-    margin: 0; /* Remove any default margin */
-    transition: color 0.3s, font-size 0.3s;
-    
+.navbar-brand-container {
+    position: relative;
+    width: 150px; /* Set the width of your container */
+    height: 50px; /* Set the height of your container */
+    padding: 10px;
+    overflow: hidden;
 }
-.navbar-brand:hover {
-    animation: rainbowEffect 2s infinite;
- }
+.dropdown-menu {
+    background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+    color: white;
+}
+.dropdown-item {
+    color: #ffffff; /* Text color of each dropdown item */
+}
+.dropdown-item:hover {
+    background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
+    color: rgb(240, 225, 48);
+}
+.navbar {
+    font-size: 30px;
+}
 
-    @keyframes rainbowEffect {
-            0% { color: rgb(216, 0, 216); }
-            16.666% { color: rgb(255, 145, 0); }
-            33.333% { color: rgb(255, 0, 0); }
-            50% { color: green; }
-            66.666% { color: yellow; }
-            83.333% { color: orange; }
-            100% { color: red; }
-    } 
-    
-        .navbar-brand-container {
-            position: relative;
-            width: 150px; /* Set the width of your container */
-            height: 40px; /* Set the height of your container */
-            overflow: hidden;
-        }
+/* Custom rule for making search button white */
+.btn-outline-success {
+    color: #ffffff; /* Text color */
+    border-color: #ffffff; /* Border color */
+    transition: color 0.3s, border-color 0.3s;
+}
 
-        .navbar-brand-container img {
-            width: 100%;
-            height: auto;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 1;
-            z-index: 1;
-            transition: opacity 0.5s ease-in-out; /* Adjust the transition duration and timing function as needed */
-        }
+.btn-outline-success:hover {
+    color: rgb(255, 255, 255); /* Text color on hover */
+    border-color: rgb(255, 255, 255); /* Border color on hover */
+    background-color: rgb(212, 82, 212);
+}
 
-        .navbar-brand-container:hover img {
-            opacity: 0;
-            z-index: -1;
-            transform: scale(1.2);        }
-
-        .navbar-brand {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-            opacity: 0;
-            z-index: 2;
-            transition: opacity 0.5s ease-in-out; /* Adjust the transition duration and timing function as needed */
-        }
-
-        .navbar-brand-container:hover .navbar-brand {
-            opacity: 1;
-        }
-
-        .dropdown-menu{
-            background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
-            color: white;
-        }
-        .dropdown-item {
-            color: #ffffff; /* Text color of each dropdown item */
-        }
-        .dropdown-item:hover{
-            background: linear-gradient(to right, #660fad, purple); /* Replace with your desired background color */
-            color: rgb(240, 225, 48);
-        }
+/* Custom rule for making "Home" navbar button bold and white */
+.navbar-nav .nav-item .nav-link.active {
+    color: #ffffff; /* Text color */
+    font-weight: bold; /* Bold font weight */
+    padding-right: 30px;
+}
