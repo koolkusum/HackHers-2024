@@ -1,8 +1,6 @@
 # Standard Library Imports
 import os
-import pathlib
 import sqlite3
-import textwrap
 from os import urandom
 from dotenv import load_dotenv
 
@@ -127,7 +125,7 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/mainpage", methods=["GET", "POST"])
+@app.route("/home", methods=["GET", "POST"])
 def mainpage():
     if request.method == "POST":
         data = request.json  # Extract the JSON data sent from the frontend
@@ -136,7 +134,7 @@ def mainpage():
         print("Received tasks:", tasks)
         # Optionally, you can store the tasks in a database or perform 
     else:
-        return render_template("mainpage.html")
+        return render_template("home.html")
 
 init_db()
 if __name__ == "__main__":
