@@ -151,8 +151,11 @@ def generate_scheduling_query(tasks):
     start_time = "2024-02-11 09:00"
     end_time = "2024-02-11 10:00"
     
+    If times are specified in the task description, start and end and durations must be followed throughly and can converge. [MODIFICATION WILL LEAD TO TERMINATION]
     Ensure a minimum break time between consecutive events.
     Avoid scheduling events during the user's designated sleeping hours.
+    Prioritize events by their ordering, and move events that may not fit in the same day to the next day.
+    Adhere to times given within an event description, but remove them in their final task description.
     """
     taskss =""
     for task in tasks:
