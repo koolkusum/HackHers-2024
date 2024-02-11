@@ -13,7 +13,7 @@
 <div class="container mt-5">
     <h2>Productivity Review Form</h2>
     
-    <form action="/submitproductivity" method="post">
+    <form action="/submitproductivity" method="post" id="productivityForm">
         <div class="form-group">
             <label for="startHour">Start Hour:</label>
             <select class="form-control" id="startHour" name="startHour">
@@ -68,36 +68,16 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary" onclick="submitProductivityReview()">Submit Review</button>
+        <!-- Keep the submit button -->
+        <button type="submit" class="btn btn-primary" onclick="return false;">Submit Review</button>
     </form>
 </div>
 
 <script>
-  function submitProductivityReview() {
-      // Get form data
-      const formData = {
-          startHour: document.getElementById('startHour').value,
-          endHour: document.getElementById('endHour').value,
-          review: document.getElementById('review').value
-      };
-  
-      // Make a fetch request
-      fetch('/submitproductivity', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-      })
-      .then(response => response.json())
-      .then(data => {
-          // Handle the response data as needed
-          console.log(data);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
-  }
-  </script>
+  // Prevent form submission
+  document.getElementById('productivityForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+  });
+</script>
 </body>
 </html>
