@@ -151,7 +151,8 @@ def generate_scheduling_query(tasks):
     start_time = "2024-02-11T09:00"
     end_time = "2024-02-11T10:00"
     
-    If times are specified in the task description, start and end and durations must be followed throughly and can converge. [MODIFICATION WILL LEAD TO TERMINATION]
+    [MODIFICATION OF THE FOLLOWING LEAD TO TERMINATION]
+    Follow specified times even if it causes overlap.
     Ensure a minimum break time between consecutive events.
     Avoid scheduling events during the user's designated sleeping hours.
     Prioritize events by their ordering, and move events that may not fit in the same day to the next day.
